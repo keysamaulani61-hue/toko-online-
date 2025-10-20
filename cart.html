@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keranjang Lucu 💕</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>🛒 Keranjang Lucu 💕</h1>
+    <a href="index.html" class="back-btn">⬅️ Kembali</a>
+  </header>
+
+  <main class="cart-container">
+    <div id="cart-items"></div>
+    <div class="total-area">
+      <h3>Total: Rp <span id="total">0</span></h3>
+      <button id="checkout">✨ Checkout Sekarang ✨</button>
+    </div>
+  </main>
+
+  <script>
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartItemsDiv = document.getElementById('cart-items');
+    const totalEl = document.getElementById('total');
+
+    if (cart.length === 0) {
+      cartItemsDiv.innerHTML = "<p class='empty'>Keranjang masih kosong 😿</p>";
+    } else {
+      let total = 0;
+      cartItemsDiv.innerHTML = cart.map((item, i) => {
+        total += item.price;
+        return `
+          <div class="cart-item">
+            <img src="${item.image}" alt="${item.name}">
+            <p>${item.name} 💖 - Rp ${item.price.toLocaleString()}</p>
+            <button onclick="hapus(${i})">❌</button>
+          </div>
+        `;
+      }).join('');
+      totalEl.textContent = total.toLocaleString();
+    }
+
+    function hapus(i) {
+      cart.splice(i, 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      location.reload();
+    }
+
+    document.getElementById('checkout').onclick = () => {
+      alert("🎉 Terima kasih sudah belanja di Toko Lucu Keisa 💕");
+      localStorage.removeItem('cart');
+      location.reload();
+    };
+  </script>
+</body>
+</html>
